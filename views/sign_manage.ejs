@@ -1,0 +1,79 @@
+<% include header.ejs %>
+<script src="/javascripts/updateTime.js"></script>
+<form class="form-horizontal" action="/sign/sign_manage" method="get">
+    <div class="container">
+        <div class="row clearfix">
+            <div class="span6 column ui-sortable">
+                <blockquote>
+                    <p>
+                    <h2>上下班登记查询</h2>
+                    </p> <p>当前系统时间 <span id="nowTime"><%=now_str%></span></p>
+                    <p>起始日期: <input type="date" name="start" value="<%=start%>" /></p>
+                    <p>结束日期: <input type="date" name="end" value="<%=end%>"/></p>
+                    <p>姓名：
+                        <select name="name">
+                            <% userList.forEach(function (user) {
+                            %>
+                            <option value="<%=user.realName%>"<%if(name==user.realName){
+                                %>selected="selected"<%
+                            }%>><%=user.realName%></option>
+                            <%
+                            })%>
+                        </select>
+                    </p>
+                    <p><button class="btn btn-primary btn-large">查询</button></p>
+                </blockquote>
+            </div>
+            <div class="span6 column ui-sortable">
+                <div class="" style="float: right">
+
+                    <h5>username:<%=user.username%></h5>
+                    <h3><%=user.realname%></h3>
+                </div>
+            </div>
+        </div>
+        <div class="row clearfix">
+            <div class="span12 column">
+                <table class="table table-hover table-bordered">
+                    <thead>
+                    <tr>
+                        <th>日期</th>
+                        <th>姓名</th>
+                        <th>出勤时间</th>
+                        <th>考勤状态</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% signList.forEach(function (sign) {
+                    %>
+                    <tr <%
+                        if(sign.signStatus == "正常"){
+                            %>
+                            class="success"
+                            <%
+                        }else if(sign.signStatus == "迟到" || sign.sign_status == "早退"){
+                            %>
+                            class="warning"
+                            <%
+                        }else{
+                            %>
+                            class="error"
+                            <%
+                        }
+                      %>>
+                        <td><%=sign.signDate%></td>
+                        <td><%=sign.realName%></td>
+                        <td><%=sign.signInTime%></td>
+                        <td><%=sign.signStatus%></td>
+                    </tr>
+                    <%
+                    })%>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</form>
+<% include footer.ejs%>
